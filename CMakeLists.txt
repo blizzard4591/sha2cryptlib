@@ -46,6 +46,15 @@ file(GLOB_RECURSE SHA2CRYPTLIB_SIMPLEUTILITY_SOURCES ${PROJECT_SOURCE_DIR}/src/s
 ##
 #############################################################
 
+if (CMAKE_COMPILER_IS_GNUCC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic")
+elseif(MSVC)
+	#
+else(CLANG)
+	# Set up some Xcode specific settings
+	set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++11")
+endif()
+
 # Test for type alignment
 try_run(SHA2CRYPTLIB_RUN_RESULT_TYPEALIGNMENT SHA2CRYPTLIB_COMPILE_RESULT_TYPEALIGNMENT
 	${PROJECT_BINARY_DIR} "${PROJECT_SOURCE_DIR}/CMakeAlignmentCheck.cpp"
