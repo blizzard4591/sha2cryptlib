@@ -48,11 +48,14 @@ file(GLOB_RECURSE SHA2CRYPTLIB_SIMPLEUTILITY_SOURCES ${PROJECT_SOURCE_DIR}/src/s
 
 if (CMAKE_COMPILER_IS_GNUCC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -Wall -pedantic")
+	add_definitions("/D_GNU_SOURCE") # to enable mempcpy in string.h
 elseif(MSVC)
 	#
 else(CLANG)
 	# Set up some Xcode specific settings
 	set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++11")
+	add_definitions("/D_GNU_SOURCE") # to enable mempcpy in string.h
 endif()
 
 # Test for type alignment
@@ -84,6 +87,13 @@ if (SHA2CRYPTLIB_CONFIG_HAVE_ENDIAN_H)
 	set(SHA2CRYPTLIB_CONFIG_HAVE_ENDIAN_H_DEF "define")
 else()
 	set(SHA2CRYPTLIB_CONFIG_HAVE_ENDIAN_H_DEF "undef")
+endif()
+
+CHECK_INCLUDE_FILES("alloca.h" SHA2CRYPTLIB_CONFIG_HAVE_ALLOCA_H)
+if (SHA2CRYPTLIB_CONFIG_HAVE_ALLOCA_H)
+	set(SHA2CRYPTLIB_CONFIG_HAVE_ALLOCA_H_DEF "define")
+else()
+	set(SHA2CRYPTLIB_CONFIG_HAVE_ALLOCA_H_DEF "undef")
 endif()
 
 try_compile(SHA2CRYPTLIB_CONFIG_HAVE_MEMPCPY ${PROJECT_BINARY_DIR} "${PROJECT_SOURCE_DIR}/CMakeCheckFunctionMempcpy.c" OUTPUT_VARIABLE SHA2CRYPTLIB_CONFIG_HAVE_MEMPCPY_OUPUT)

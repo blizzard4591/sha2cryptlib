@@ -9,15 +9,22 @@
 #include <stdint.h>
 #include <malloc.h>
 
+#ifdef SHA2CRYPTLIB_CONFIG_HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
+
 #ifdef SHA2CRYPTLIB_CONFIG_HAVE_ENDIAN_H
 #	include <endian.h>
 #endif
 #include "portable_endian.h"
 
+#ifdef _MSC_VER
 #	define __alignof__(x) __alignof(x)
+#	define snprintf _snprintf_c
+#endif
+
 #	define __ALIGNOF_UINT32_T SHA2CRYPTLIB_CONFIG_TYPEALIGNMENT_UINT32
 #	define __ALIGNOF_UINT64_T SHA2CRYPTLIB_CONFIG_TYPEALIGNMENT_UINT64
-#	define snprintf _snprintf_c
 #	define __stpncpy stpncpy
 
 
